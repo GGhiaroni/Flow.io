@@ -1,5 +1,6 @@
 package GabrielTiziano.Flow.io.model;
 
+import GabrielTiziano.Flow.io.model.enums.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,7 +25,8 @@ public class Topic {
     @Column(name = "description")
     private String description;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "category")
-    private String category;
+    private Category category;
 }
 
