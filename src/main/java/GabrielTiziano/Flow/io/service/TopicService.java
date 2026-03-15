@@ -5,6 +5,7 @@ import GabrielTiziano.Flow.io.repository.TopicRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TopicService {
@@ -20,5 +21,24 @@ public class TopicService {
 
     public Topic createTopic(Topic topic){
         return topicRepository.save(topic);
+    }
+
+    public Topic getTopic(Long id){
+        Optional<Topic> topicFound = topicRepository.findById(id);
+        return topicFound.orElse(null);
+    }
+
+    public Topic updateTopic(Long id, Topic topicSent){
+        Optional<Topic> topicFound = topicRepository.findById(id);
+        if(topicFound.isPresent()){
+            topicSent.setId(id);
+            topicRepository.save(topicSent);
+        } else {
+            return null;
+        }
+    }
+
+    public void deleteTopic(Long id){
+        topicRepository.deleteById(id);
     }
 }
