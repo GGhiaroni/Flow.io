@@ -1,5 +1,6 @@
 package GabrielTiziano.Flow.io.controller;
 
+import GabrielTiziano.Flow.io.dto.TopicDTO;
 import GabrielTiziano.Flow.io.model.Topic;
 import GabrielTiziano.Flow.io.service.TopicService;
 import org.springframework.http.HttpStatus;
@@ -20,14 +21,14 @@ public class TopicController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<Topic>> getTopics(){
-        List<Topic> topicsListed = topicService.getTopics();
+    public ResponseEntity<List<TopicDTO>> getTopics(){
+        List<TopicDTO> topicsListed = topicService.getTopics();
         return ResponseEntity.ok(topicsListed);
     }
 
     @GetMapping("/listar/{id}")
     public ResponseEntity<?> getTopic(@PathVariable Long id){
-        Topic topicFound = topicService.getTopic(id);
+        TopicDTO topicFound = topicService.getTopic(id);
         if(topicFound != null) {
             return ResponseEntity.ok(topicFound);
         } else {
@@ -37,14 +38,14 @@ public class TopicController {
     }
 
     @PostMapping("/criar")
-    public ResponseEntity<Topic> createTopic(Topic topic){
-        Topic topicCreated = topicService.createTopic(topic);
+    public ResponseEntity<TopicDTO> createTopic(TopicDTO topic){
+        TopicDTO topicCreated = topicService.createTopic(topic);
         return ResponseEntity.status(HttpStatus.CREATED).body(topicCreated);
     }
 
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<?> updateTopic(@PathVariable Long id, @RequestBody Topic topicSent){
-        Topic topicUpdated = topicService.updateTopic(id, topicSent);
+    public ResponseEntity<?> updateTopic(@PathVariable Long id, @RequestBody TopicDTO topicSent){
+        TopicDTO topicUpdated = topicService.updateTopic(id, topicSent);
         if (topicUpdated != null) {
             return ResponseEntity.ok("Tópico de id " + id + " atualizado com sucesso.");
         } else {
