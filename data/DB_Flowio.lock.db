@@ -1,0 +1,6 @@
+#FileLock
+#Tue Mar 17 11:19:48 BRT 2026
+hostName=192.168.0.4
+id=19cfc2ac7379359de2fcfad8e5c114f1586036b8a04
+method=file
+server=192.168.0.4\:58429
