@@ -1,5 +1,7 @@
 package GabrielTiziano.Flow.io.service;
 
+import GabrielTiziano.Flow.io.dto.TopicDTO;
+import GabrielTiziano.Flow.io.model.Topic;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpHeaders;
@@ -9,7 +11,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class GeminiService {
@@ -20,7 +24,7 @@ public class GeminiService {
         this.webClient = webClient;
     }
 
-    public Mono<String> generateStudyRoadmap() {
+    public Mono<String> generateStudyRoadmap(List<TopicDTO> topicList) {
 
         if (apiKey == null || apiKey.isBlank()) {
             return Mono.error(new RuntimeException("API Key não configurada."));
@@ -30,12 +34,16 @@ public class GeminiService {
 
         String fullUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + cleanApiKey;
 
+        String topicsDb = topicList.stream()
+                .map(topic -> "- " + topic.getName() + " (Categoria: " + topic.getCategory() + ")")
+                .collect(Collectors.joining("\n"));
+
         String prompt = "Quero me torar um desenvolvedor " +
                 "especialista e futuro tech lead com total domínio das habilidades que " +
                 "o mercado de trabalho pede atualmente nas vagas. Crie um plano de estudo " +
-                "detalhado, passo a passo, do básico ao domínio completo, para a stack Front-end, " +
-                "JavaScript, React, Next.js e o que mais for necessário para virar uma referência " +
-                "mundial no assunto.";
+                "detalhado, passo a passo, do básico ao domínio completo, considerando " +
+                "os seguintes tópicos:\n " +
+                topicsDb;
 
         Map<String, Object> requestBody = Map.of(
                 "contents", new Object[]{
